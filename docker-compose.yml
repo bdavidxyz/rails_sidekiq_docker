@@ -1,0 +1,69 @@
+version: '2.2'
+
+services:
+
+  db:
+    image: postgres:11.1
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+      - '.dockerdev/init.sql:/docker-entrypoint-initdb.d/init.sql'
+    ports:
+      - '5432'
+    environment:
+      POSTGRES_HOST_AUTH_METHOD: "trust"
+      
+  webpack:
+    build: .
+    command:  bash -c "rm -rf /railsapp/public/packs; bundle check || bundle install; /railsapp/bin/webpack-dev-server"
+    volumes:
+      - '.:/railsapp'
+      - bundle:/usr/local/bundle
+      - node_modules:/railsapp/node_modules
+    ports:
+      - '3035:3035'
+    environment:
+      - WEBPACKER_DEV_SERVER_HOST=0.0.0.0
+
+  web:
+    build: .
+    command: bash -c "rm -rf /railsapp/tmp/pids/server.pid && rails s -p 3000 -b '0.0.0.0'"
+    volumes:
+      - '.:/railsapp'
+      - bundle:/usr/local/bundle
+      - node_modules:/railsapp/node_modules
+    ports:
+      - '127.0.0.1:3000:3000'
+    depends_on:
+      - db
+      - webpack
+    environment:
+      - WEBPACKER_DEV_SERVER_HOST=webpack
+      - REDIS_URL=redis://redis:6379
+
+  redis:
+    image: 'redis:5-alpine'
+    command: redis-server
+    ports:
+      - '6379:6379'
+    volumes:
+      - 'redis:/data'
+
+  sidekiq:
+    depends_on:
+      - 'db'
+      - 'redis'
+      - 'web'
+    build: .
+    command: bundle exec sidekiq
+    volumes:
+      - bundle:/usr/local/bundle
+      - '.:/railsapp'
+      - '/railsapp/tmp' # don't mount tmp directory
+    environment:
+      - REDIS_URL_SIDEKIQ=redis://redis:6379/1
+
+volumes:
+  bundle:
+  pgdata:
+  redis:
+  node_modules:
