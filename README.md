@@ -50,17 +50,15 @@ The post-build script will  :
  - add a blank welcome controller and a blank welcome page so that you have your own home page
  - change routes.rb to point to the welcome page
  - change routes.rb to add sidekiq routes
- - add sidekiq, awesome_print and run bundle install
+ - add sidekiq, awesome_print to the Gemfile
  - add config/initializers/sidekiq.rb so that sidekiq will run properly
- - add config/sidekiq.yaml so that sidekiq will run properly
- - change config/database.yml so that the host prop will point to the one defined by docker
+ - change config/database.yml so that the host and username props will match the ones defined in Docker confs
  - adds config.active_job.queue_adapter = :sidekiq to config/application.rb
 
 ```bash
 $> ./.dockerdev/post_build.sh
 ```
 
-Heroku : add redis extension, add a worker with 'heroku ps:scale web=1 worker=1', add a Procfile, check REDIS_URL env var
 
 ### 5. Start services
 
@@ -68,12 +66,17 @@ Heroku : add redis extension, add a worker with 'heroku ps:scale web=1 worker=1'
 docker-compose up
 ```
 
+See the docker-compose.yml file to see what happens when starting services.
+
 ### 6. Visit "hello world" page
 
  - go to http://localhost:3000/, The created welcome page should appear
 
  - go to http://localhost:3000/sidekiq, The created sidekiq monitoring should appear
 
+### (optionnal) make it work on Heroku
+
+Heroku : add redis extension, add a worker with 'heroku ps:scale web=1 worker=1', add a Procfile, check REDIS_URL env var
 
 ## Restart from scratch
 
