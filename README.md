@@ -51,14 +51,18 @@ The post-build script will  :
  - change routes.rb to add sidekiq routes
  - add sidekiq, awesome_print and run bundle install
  - add config/initializers/sidekiq.rb so that sidekiq will run properly
+ - add config/sidekiq.yaml so that sidekiq will run properly
  - change config/database.yml so that the host prop will point to the one defined by docker
  - run db:setup db:migrate so that the development database will run properly
  - yarn add chokidar to allow a live-reload of erb files
  - set check_yarn_integrity to false if needed
+ - adds config.active_job.queue_adapter = :sidekiq to config/application.rb
 
 ```bash
 $> ./dockerdev/post_build.sh
 ```
+
+Heroku : add redis extension, add a worker with 'heroku ps:scale web=1 worker=1', add a Procfile, check REDIS_URL provisionning
 
 ### 5. Start services
 
