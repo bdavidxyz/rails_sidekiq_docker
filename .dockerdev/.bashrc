@@ -1,0 +1,6 @@
+alias be = "bundle exec"
+alias ber = "bundle exec rails"
+alias br = "bin/rails"
+alias brg = "bin/rails generate"
+alias bek = "bundle exec rake"
+alias gs = "git status"
