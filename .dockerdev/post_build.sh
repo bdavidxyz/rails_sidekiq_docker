@@ -25,10 +25,12 @@ echo 'changed yarn integrity to false in config/webpacker.yml'
 
 
 awk '/pool:/ { print; print "  host: db"; next }1' config/database.yml > config/tmp && mv config/tmp config/database.yml
+awk '/pool:/ { print; print "  username: railsapp"; next }1' config/database.yml > config/tmp && mv config/tmp config/database.yml
+
 echo -e "added host:db to config/database.yml"
 
 awk '/gem \x27'''bootsnap'''\x27/ { print; print "gem \x27'''sidekiq'''\x27"; next }1' Gemfile > config/tmp3 && mv config/tmp3 Gemfile
 awk '/gem \x27'''bootsnap'''\x27/ { print; print "gem \"awesome_print\""; next }1' Gemfile > config/tmp3 && mv config/tmp3 Gemfile
-echo -e "added sidekiq gem and awesome_print to Gemfile"
+echo -e "reinstalled sidekiq gem and awesome_print gem to Gemfile"
 
 
