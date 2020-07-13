@@ -2,6 +2,14 @@ mkdir "app/views/welcome"
 printf "<h1 class='c-welcome'>Welcome</h1>\n<div>Find me under app/views/welcome/index.html.erb</div>\n" > app/views/welcome/index.html.erb
 echo -e "added simple view under app/views/welcome/index.html.erb"
 
+
+printf "Sidekiq.configure_server do |config|\n  config.redis = { url: ENV.fetch('REDIS_URL', 'redis://redis:6379/1') }\nend\nSidekiq.configure_client do |config|\n  config.redis = { url: ENV.fetch('REDIS_URL_SIDEKIQ', 'redis://redis:6379/1') }\nend" > config/initializers/sidekiq.rb
+echo -e "added an initializer for Sidekiq under config/initializers/sidekiq.rb"
+
+awk '/Rails::Application/ { print; print "  config.active_job.queue_adapter = :sidekiq"; next }1' config/application.rb > config/tmp2 && mv config/tmp2 config/application.rb
+echo -e "added config.active_job.queue_adapter = :sidekiq to config/application.rb"
+
+
 echo -e "require 'sidekiq/web'\n$(cat config/routes.rb)" > config/routes.rb
 awk '/Rails.application.routes.draw do/ { print; print "  root \x27'''welcome#index'''\x27"; next }1' config/routes.rb > config/tmp && mv config/tmp config/routes.rb
 awk '/Rails.application.routes.draw do/ { print; print "  get \x27'''welcome/index'''\x27, to: \x27'''welcome#index'''\x27"; next }1' config/routes.rb > config/tmp && mv config/tmp config/routes.rb
@@ -18,5 +26,9 @@ echo -e "added an empty app/controllers/welcome_controller.rb"
 awk '/pool:/ { print; print "  host: db"; next }1' config/database.yml > config/tmp && mv config/tmp config/database.yml
 echo -e "added host:db to config/database.yml"
 
+awk '/gem "pg"/ { print; print "  gem \x27'''sidekiq'''\x27"; next }1' Gemfile > config/tmp3 && mv config/tmp3 Gemfile
+awk '/gem "pg"/ { print; print "  gem \x27'''awesome_print'''\x27"; next }1' Gemfile > config/tmp4 && mv config/tmp4 Gemfile
+echo -e "added sidekiq gem to Gemfile"
 
+bundle install
 

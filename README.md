@@ -46,7 +46,7 @@ Flag explanations:
 
 The post-build script will  :
 
- - set check_yarn_integrity to false if needed
+ - set check_yarn_integrity to false in config/webpacker.yml
  - add a blank welcome controller and a blank welcome page so that you have your own home page
  - change routes.rb to point to the welcome page
  - change routes.rb to add sidekiq routes
@@ -54,15 +54,13 @@ The post-build script will  :
  - add config/initializers/sidekiq.rb so that sidekiq will run properly
  - add config/sidekiq.yaml so that sidekiq will run properly
  - change config/database.yml so that the host prop will point to the one defined by docker
- - run db:setup db:migrate so that the development database will run properly
- - yarn add chokidar to allow a live-reload of erb files
  - adds config.active_job.queue_adapter = :sidekiq to config/application.rb
 
 ```bash
 $> ./.dockerdev/post_build.sh
 ```
 
-Heroku : add redis extension, add a worker with 'heroku ps:scale web=1 worker=1', add a Procfile, check REDIS_URL provisionning
+Heroku : add redis extension, add a worker with 'heroku ps:scale web=1 worker=1', add a Procfile, check REDIS_URL env var
 
 ### 5. Start services
 
@@ -72,10 +70,10 @@ docker-compose up
 
 ### 6. Visit "hello world" page
 
-go to http://localhost:3000/
+ - go to http://localhost:3000/, The created welcome page should appear
 
- - Open the browser console to check that CSS, JS loaded correctly and no 404 request occured.
- - Check also the logs of the services in your terminal to notice that no error occured.
+ - go to http://localhost:3000/sidekiq, The created sidekiq monitoring should appear
+
 
 ## Restart from scratch
 
