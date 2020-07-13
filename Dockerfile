@@ -1,4 +1,4 @@
-FROM ruby:2.6.5-slim-buster
+FROM ruby:2.6.6-slim-buster
 
 # Common dependencies
 RUN apt-get update -qq \
