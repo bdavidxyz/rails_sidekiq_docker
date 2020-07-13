@@ -31,10 +31,10 @@ docker-compose build
 
 Run :
 ```
-docker-compose run --rm --no-deps web-srv rails new . --skip --database=postgresql
+docker-compose run --rm --no-deps web rails new . --skip --database=postgresql
 ```
 
-This will run the `rails new` command on our `web-srv` service defined in docker-compose.yml.
+This will run the `rails new` command on our `web` service defined in docker-compose.yml.
 
 Flag explanations:
 * **--no-deps** - Tells `docker-compose run` not to start any of the services in `depends_on`.
