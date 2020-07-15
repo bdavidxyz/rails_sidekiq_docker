@@ -6,7 +6,7 @@ printf "<h1 class='c-welcome'>Welcome</h1>\n<div>Find me under app/views/welcome
 echo -e "added simple view under app/views/welcome/index.html.erb"
 
 
-printf "Sidekiq.configure_server do |config|\n  config.redis = { url: ENV.fetch('REDIS_URL', 'redis://redis:6379/1') }\nend\nSidekiq.configure_client do |config|\n  config.redis = { url: ENV.fetch('REDIS_URL_SIDEKIQ', 'redis://redis:6379/1') }\nend" > config/initializers/sidekiq.rb
+printf "Sidekiq.configure_server do |config|\n  config.redis = { url: ENV.fetch('REDIS_URL', 'redis://redis:6379/1') }\nend\nSidekiq.configure_client do |config|\n  config.redis = { url: ENV.fetch('REDIS_URL', 'redis://redis:6379/1') }\nend" > config/initializers/sidekiq.rb
 echo -e "added an initializer for Sidekiq under config/initializers/sidekiq.rb"
 
 awk '/Rails::Application/ { print; print "  config.active_job.queue_adapter = :sidekiq"; next }1' config/application.rb > config/tmp2 && mv config/tmp2 config/application.rb
