@@ -4,9 +4,7 @@ This repository is intended to be the simplest possible example of Rails 6 + sid
 
 **You need only 4 basic command lines to get things work.**
 
-When the default page displays, it runs a "hello world" job in the background.
-
-The job can be monitored at the "/sidekiq" URL.
+Any job can be monitored at the "/sidekiq" URL.
 
 Because multiple tools and services are needed for such a basic case, the demo uses docker and docker-compose to abstract complexity as much as possible.
 
