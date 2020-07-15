@@ -29,7 +29,7 @@ services:
     depends_on:
       - db
     environment:
-      - REDIS_URL=redis://redis:6379
+      - REDIS_URL=redis://redis:6379/1
       - RAILS_ENV=development
 
   redis:
@@ -46,13 +46,13 @@ services:
       - 'redis'
       - 'web'
     build: .
-    command: bundle exec sidekiq
+    command: bundle exec sidekiq -C config/sidekiq.yml
     volumes:
       - bundle:/usr/local/bundle
       - '.:/railsapp'
       - '/railsapp/tmp' # don't mount tmp directory
     environment:
-      - REDIS_URL=redis://redis:6379
+      - REDIS_URL=redis://redis:6379/1
 
 volumes:
   bundle:
