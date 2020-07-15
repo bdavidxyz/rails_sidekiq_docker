@@ -46,7 +46,7 @@ services:
       - 'redis'
       - 'web'
     build: .
-    command: bundle exec sidekiq -C config/sidekiq.yml
+    command: bundle exec sidekiq
     volumes:
       - bundle:/usr/local/bundle
       - '.:/railsapp'
